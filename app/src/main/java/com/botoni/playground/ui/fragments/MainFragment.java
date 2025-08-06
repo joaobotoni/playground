@@ -7,18 +7,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.botoni.playground.R;
+import com.botoni.playground.utils.Format;
 import com.botoni.playground.ui.model.Extract;
 import com.botoni.playground.ui.adapters.ExtractAdapter;
-import com.botoni.playground.utils.Format;
+import com.botoni.playground.ui.viewmodels.MainViewModel;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainFragment extends Fragment {
 
@@ -34,10 +36,18 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extracts = new ArrayList<>();
-        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("278.19")));
-        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("277.91")));
-        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("228.39")));
-        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("338.79")));
+        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("230.19")));
+        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("221.91")));
+        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("258.39")));
+        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("339.79")));
+
+        MainViewModel model = new ViewModelProvider(this).get(MainViewModel.class);
+        model.updateBalanceTotalState(BigDecimal.ZERO, extracts);
+        model.getUiState().observe(this, uiState -> {
+            value.setText(Format.decimal(uiState.getValue()));
+            list.setLayoutManager(new LinearLayoutManager(getContext()));
+            list.setAdapter(new ExtractAdapter(getContext(), uiState.getExtracts()));
+        });
     }
 
     @Override
@@ -47,24 +57,5 @@ public class MainFragment extends Fragment {
         list = view.findViewById(R.id.lista);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        setup();
-    }
-
-    public void setup() {
-        setupViews();
-        setupRecyclerView();
-    }
-
-    public void setupViews() {
-        value.setText(Format.decimal(new BigDecimal("1123.28")));
-    }
-
-    public void setupRecyclerView() {
-        list.setAdapter(new ExtractAdapter(requireContext(), extracts));
-        list.setLayoutManager(new LinearLayoutManager(requireContext()));
-    }
 }
 

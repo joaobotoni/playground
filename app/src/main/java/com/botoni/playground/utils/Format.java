@@ -7,22 +7,19 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class Format {
+public final class Format {
 
-    private static final DecimalFormatSymbols DECIMAL_SYMBOLS;
-    private static final DecimalFormat DECIMAL_FORMAT;
-    private static final DateTimeFormatter DATE_FORMAT;
+    private static final DecimalFormat DECIMAL_FORMAT = createDecimalFormat();
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("pt", "BR"));
 
-    static {
-        DECIMAL_SYMBOLS = new DecimalFormatSymbols();
-        DECIMAL_SYMBOLS.setGroupingSeparator('.');
-        DECIMAL_SYMBOLS.setDecimalSeparator(',');
-        DECIMAL_FORMAT = new DecimalFormat("#,##0.00", DECIMAL_SYMBOLS);
+    private static DecimalFormat createDecimalFormat() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        symbols.setDecimalSeparator(',');
+        return new DecimalFormat("#,##0.00", symbols);
     }
 
-    static {
-        DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(new Locale("pt", "BR"));
-    }
+    private Format() {}
 
     public static String decimal(BigDecimal value) {
         return DECIMAL_FORMAT.format(value);

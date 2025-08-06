@@ -39,8 +39,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/saldo_icone">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <View
                     android:id="@+id/indicador"
@@ -91,16 +90,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/saldo_icone"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="Ícone de visibilidade"
-                android:src="@drawable/outline_visibility_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/saldo"
-                app:layout_constraintBottom_toBottomOf="@id/saldo" />
-
             <View
                 android:id="@+id/separador"
                 android:layout_width="0dp"
@@ -123,8 +112,6 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
         <LinearLayout
             android:id="@+id/rodape"
