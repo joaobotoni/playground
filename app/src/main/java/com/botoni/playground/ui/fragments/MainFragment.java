@@ -15,43 +15,12 @@ import com.botoni.playground.R;
 
 public class MainFragment extends Fragment {
 
-    private TextView counter;
-    private Button increment;
-    private Button decrement;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
-    }
+    public MainFragment() {
+        super(R.layout.fragment_main);
+     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        this.counter = view.findViewById(R.id.counter);
-        this.increment = view.findViewById(R.id.increase);
-        this.decrement =  view.findViewById(R.id.decrease);
-        setupListeners();
-    }
-
-    private void setupListeners(){
-        increment.setOnClickListener(v ->
-                counter.setText(String.valueOf(increment(counter.getText().toString())))
-        );
-
-        decrement.setOnClickListener(v ->
-            counter.setText(String.valueOf(decrement(counter.getText().toString())))
-        );
-    }
-
-    private int increment(String string) {
-        int i = Integer.parseInt(string);
-        i++;
-        return i;
-    }
-
-    private int decrement(String string) {
-        int i = Integer.parseInt(string);
-        i--;
-        return i;
+        super.onViewCreated(view, savedInstanceState);
     }
 }
