@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.botoni.playground.R;
-import com.botoni.playground.ui.model.Extract;
+import com.botoni.playground.ui.models.Extract;
 import com.botoni.playground.utils.Format;
 
 

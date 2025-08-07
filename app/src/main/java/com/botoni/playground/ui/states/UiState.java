@@ -1,6 +1,6 @@
-package com.botoni.playground.ui.state;
+package com.botoni.playground.ui.states;
 
-import com.botoni.playground.ui.model.Extract;
+import com.botoni.playground.ui.models.Extract;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.List;
 public class UiState {
     private final BigDecimal value;
     private final List<Extract> extracts;
-
 
     public UiState(BigDecimal value, List<Extract> extracts) {
         this.value = value;

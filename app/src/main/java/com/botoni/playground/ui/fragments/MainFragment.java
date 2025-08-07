@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.botoni.playground.R;
 import com.botoni.playground.utils.Format;
-import com.botoni.playground.ui.model.Extract;
+import com.botoni.playground.ui.models.Extract;
 import com.botoni.playground.ui.adapters.ExtractAdapter;
 import com.botoni.playground.ui.viewmodels.MainViewModel;
 
@@ -38,16 +38,8 @@ public class MainFragment extends Fragment {
         extracts = new ArrayList<>();
         extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("230.19")));
         extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("221.91")));
-        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("258.39")));
+        extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("-258.39")));
         extracts.add(new Extract("Valor em conta", LocalDateTime.now(), new BigDecimal("339.79")));
-
-        MainViewModel model = new ViewModelProvider(this).get(MainViewModel.class);
-        model.updateBalanceTotalState(BigDecimal.ZERO, extracts);
-        model.getUiState().observe(this, uiState -> {
-            value.setText(Format.decimal(uiState.getValue()));
-            list.setLayoutManager(new LinearLayoutManager(getContext()));
-            list.setAdapter(new ExtractAdapter(getContext(), uiState.getExtracts()));
-        });
     }
 
     @Override
@@ -55,7 +47,14 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         value = view.findViewById(R.id.valor);
         list = view.findViewById(R.id.lista);
-    }
 
+        MainViewModel model = new ViewModelProvider(this).get(MainViewModel.class);
+        model.updateBalanceTotalState(BigDecimal.ZERO, extracts);
+        model.getUiState().observe(requireActivity(), uiState -> {
+            value.setText(Format.decimal(uiState.getValue()));
+            list.setLayoutManager(new LinearLayoutManager(getContext()));
+            list.setAdapter(new ExtractAdapter(getContext(), uiState.getExtracts()));
+        });
+    }
 }
 

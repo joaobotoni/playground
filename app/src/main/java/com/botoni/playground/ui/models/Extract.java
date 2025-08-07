@@ -1,4 +1,4 @@
-package com.botoni.playground.ui.model;
+package com.botoni.playground.ui.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

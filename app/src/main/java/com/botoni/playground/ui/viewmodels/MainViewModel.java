@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.botoni.playground.ui.state.UiState;
-import com.botoni.playground.ui.model.Extract;
+import com.botoni.playground.ui.states.UiState;
+import com.botoni.playground.ui.models.Extract;
 
 import java.util.List;
 import java.math.BigDecimal;
