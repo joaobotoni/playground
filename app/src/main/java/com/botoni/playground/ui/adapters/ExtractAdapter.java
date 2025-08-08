@@ -1,8 +1,10 @@
 package com.botoni.playground.ui.adapters;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.botoni.playground.R;
@@ -68,7 +71,15 @@ public class ExtractAdapter extends RecyclerView.Adapter<ExtractAdapter.ViewHold
             time.setText(Format.date(extract.getDateTime()));
 
             TextView value = itemView.findViewById(R.id.valor);
-            value.setText(Format.decimal(extract.getValue()));
+            BigDecimal valueDecimal = extract.getValue();
+
+            if (valueDecimal.compareTo(BigDecimal.ZERO) <= 0) {
+                value.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
+            }
+            else{
+                value.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.green));
+            }
+            value.setText(Format.decimal(valueDecimal));
         }
     }
 

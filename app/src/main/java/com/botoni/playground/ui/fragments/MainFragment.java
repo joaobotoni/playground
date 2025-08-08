@@ -1,5 +1,6 @@
 package com.botoni.playground.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,16 +34,19 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
     private TextView value;
     private RecyclerView list;
     private List<Extract> extracts;
+    private View indicator;
     private LineChart lineChart;
+
+    private double totalValue;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extracts = new ArrayList<>();
-        extracts.add(new Extract("Valor em conta","Investimento 1", LocalDateTime.now(), new BigDecimal("230.19")));
-        extracts.add(new Extract("Valor em conta","Investimento 2", LocalDateTime.now(), new BigDecimal("221.91")));
-        extracts.add(new Extract("Valor em conta","Investimento 3", LocalDateTime.now(), new BigDecimal("258.39")));
+        extracts.add(new Extract("Valor em conta", "Investimento 1", LocalDateTime.now(), new BigDecimal("230.19")));
+        extracts.add(new Extract("Valor em conta", "Investimento 2", LocalDateTime.now(), new BigDecimal("221.91")));
+        extracts.add(new Extract("Valor em conta", "Investimento 3", LocalDateTime.now(), new BigDecimal("258.39")));
         extracts.add(new Extract("Valor em conta", "Investimento 4", LocalDateTime.now(), new BigDecimal("339.79")));
         extracts.add(new Extract("Valor em conta", "Investimento 5", LocalDateTime.now(), new BigDecimal("-339.79")));
         extracts.add(new Extract("Valor em conta", "Investimento 6", LocalDateTime.now(), new BigDecimal("-339.79")));
@@ -63,6 +67,7 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
         value = view.findViewById(R.id.valor);
         list = view.findViewById(R.id.lista);
         lineChart = view.findViewById(R.id.lineChart);
+        indicator = view.findViewById(R.id.indicador);
 
         MainViewModel model = new ViewModelProvider(this).get(MainViewModel.class);
         model.updateBalanceTotalState(BigDecimal.ZERO, extracts);
@@ -72,6 +77,12 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
             list.setLayoutManager(new LinearLayoutManager(getContext()));
             list.setAdapter(new ExtractAdapter(getContext(), uiState.getExtracts(), this));
             setupLineChart(uiState.getExtracts());
+            BigDecimal totalValue = uiState.getExtracts().stream()
+                    .map(Extract::getValue)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            if (totalValue.doubleValue() <= 0.0) {
+                indicator.getBackground().setTint(Color.RED);
+            }
         });
     }
 
