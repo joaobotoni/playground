@@ -47,6 +47,7 @@ public class ExtractDetailFragment extends DialogFragment {
 
         TextView description = view.findViewById(R.id.description_extract);
         description.setText(extract.getDescription());
+
     }
 
 

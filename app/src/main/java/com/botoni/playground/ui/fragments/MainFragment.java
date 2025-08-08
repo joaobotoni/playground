@@ -18,6 +18,10 @@ import com.botoni.playground.utils.Format;
 import com.botoni.playground.ui.models.Extract;
 import com.botoni.playground.ui.adapters.ExtractAdapter;
 import com.botoni.playground.ui.viewmodels.MainViewModel;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -29,6 +33,8 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
     private TextView value;
     private RecyclerView list;
     private List<Extract> extracts;
+    private LineChart lineChart;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +44,11 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
         extracts.add(new Extract("Valor em conta","Investimento 2", LocalDateTime.now(), new BigDecimal("221.91")));
         extracts.add(new Extract("Valor em conta","Investimento 3", LocalDateTime.now(), new BigDecimal("258.39")));
         extracts.add(new Extract("Valor em conta", "Investimento 4", LocalDateTime.now(), new BigDecimal("339.79")));
+        extracts.add(new Extract("Valor em conta", "Investimento 5", LocalDateTime.now(), new BigDecimal("-339.79")));
+        extracts.add(new Extract("Valor em conta", "Investimento 6", LocalDateTime.now(), new BigDecimal("-339.79")));
+        extracts.add(new Extract("Valor em conta", "Investimento 7", LocalDateTime.now(), new BigDecimal("-339.79")));
+        extracts.add(new Extract("Valor em conta", "Investimento 8", LocalDateTime.now(), new BigDecimal("-339.79")));
+        extracts.add(new Extract("Valor em conta", "Investimento 9", LocalDateTime.now(), new BigDecimal("-339.79")));
     }
 
     @Nullable
@@ -51,6 +62,7 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
         super.onViewCreated(view, savedInstanceState);
         value = view.findViewById(R.id.valor);
         list = view.findViewById(R.id.lista);
+        lineChart = view.findViewById(R.id.lineChart);
 
         MainViewModel model = new ViewModelProvider(this).get(MainViewModel.class);
         model.updateBalanceTotalState(BigDecimal.ZERO, extracts);
@@ -59,6 +71,7 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
             value.setText(Format.decimal(uiState.getValue()));
             list.setLayoutManager(new LinearLayoutManager(getContext()));
             list.setAdapter(new ExtractAdapter(getContext(), uiState.getExtracts(), this));
+            setupLineChart(uiState.getExtracts());
         });
     }
 
@@ -72,5 +85,29 @@ public class MainFragment extends Fragment implements ExtractAdapter.OnItemClick
 
         fragment.show(getParentFragmentManager(), null);
     }
+
+
+    private void setupLineChart(List<Extract> extracts) {
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < extracts.size(); i++) {
+            float yValue = extracts.get(i).getValue().floatValue();
+            entries.add(new Entry(i, yValue));
+        }
+
+        LineDataSet dataSet = new LineDataSet(entries, "Histórico");
+
+        dataSet.setDrawCircles(true);
+        dataSet.setDrawValues(false);
+        dataSet.setLineWidth(2f);
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        LineData lineData = new LineData(dataSet);
+        lineChart.setData(lineData);
+
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.invalidate();
+    }
+
 }
 
